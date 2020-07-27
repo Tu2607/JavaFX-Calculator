@@ -1,4 +1,6 @@
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -20,6 +22,7 @@ public class Interface extends Application{
         primaryStage.setResizable(false); //Can't resize this bitch
 
         GridPane mainPane = new GridPane(); 
+        mainPane.setHgap(10);
 
         GridPane layout = new GridPane();
         layout.setHgap(10);
@@ -43,7 +46,6 @@ public class Interface extends Application{
         layout.getColumnConstraints().add(col);
 
         TextField pad = new TextField();
-        pad.autosize();
         mainPane.add(pad, 0, 0);
 
         Button buttons[] = new Button[10];
@@ -55,6 +57,11 @@ public class Interface extends Application{
         Button sub = new Button("-");
         Button mul = new Button("*");
         Button div = new Button("/");
+        Button sign = new Button("+/-");
+        Button dot = new Button (".");
+        Button C = new Button("C");
+        Button CE = new Button("CE");
+        Button equal = new Button("=");
 
         //Numbers pad
         layout.add(buttons[0], 1, 4);
@@ -77,15 +84,58 @@ public class Interface extends Application{
         mul.setPrefSize(70, 70);
         layout.add(div, 3, 3);
         div.setPrefSize(70, 70);
+        layout.add(sign, 0, 4);
+        sign.setPrefSize(70, 70);
+        layout.add(dot, 2, 4);
+        dot.setPrefSize(70, 70);
+        layout.add(C, 0, 0);
+        C.setPrefSize(70, 70);
+        layout.add(CE, 1, 0);
+        CE.setPrefSize(70, 70);
+        layout.add(equal,3,4);
+        equal.setPrefSize(70, 70);
+
+        //Setting up number buttons
+        for(int i = 0; i < 10; ++i){
+            Integer a = i;
+            buttons[i].setOnAction(e -> {
+                String cur = pad.getText();
+                pad.setText(cur + Integer.toString(a));
+            });
+        }
+
+        //For decimal
+        dot.setOnAction(e -> {
+            String cur = pad.getText();
+            if(cur.isEmpty()){ //Check this part abit more
+                pad.setText("0.");
+            } else {
+                pad.setText(cur + ".");
+            }
+        });
+
+        //Signed number
+        sign.setOnAction(e -> {
+            String cur = pad.getText();
+            if(cur.isEmpty()){}
+            else if(cur.charAt(0) == '-'){ //Debug this part here
+                pad.setText(cur.substring(1));
+            }
+            else{
+                pad.setText("-" + cur);
+            }
+        });
+
+
 
         layout.setAlignment(Pos.CENTER);
-        layout.setPrefSize(300, 400);
+        layout.setPrefSize(400, 500);
 
         mainPane.add(layout,0,1);
+        mainPane.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(mainPane, 300, 400);
+        Scene scene = new Scene(mainPane, 500, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
-
 	}
 }
