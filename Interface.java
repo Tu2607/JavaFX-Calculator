@@ -12,9 +12,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 public class Interface extends Application{
+
+
     static public void main(String Argv[]){
         launch();
     }
+
+    operation<Float> fOp;
+    operation<Integer> iOp;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception { 
@@ -33,17 +38,11 @@ public class Interface extends Application{
         col.setPercentWidth(10);
         layout.getColumnConstraints().add(col);
         
-        col = new ColumnConstraints();
-        col.setPercentWidth(10);
-        layout.getColumnConstraints().add(col);
-
-        col = new ColumnConstraints();
-        col.setPercentWidth(10);
-        layout.getColumnConstraints().add(col);
-
-        col = new ColumnConstraints();
-        col.setPercentWidth(10);
-        layout.getColumnConstraints().add(col);
+        for(int i = 0; i < 3; ++i){
+            col = new ColumnConstraints();
+            col.setPercentWidth(10);
+            layout.getColumnConstraints().add(col);
+        }
 
         TextField pad = new TextField();
         mainPane.add(pad, 0, 0);
@@ -126,6 +125,38 @@ public class Interface extends Application{
             }
         });
 
+        C.setOnAction(e -> {
+            if(pad.getText().isEmpty()){ }
+            else {
+                String cur = pad.getText();
+                cur = cur.substring(0, cur.length() - 1);
+                pad.setText(cur);
+            }
+        });
+
+        CE.setOnAction(e -> {
+            if(pad.getText().isEmpty()){ }
+            else{
+                pad.setText("");
+            }
+        });
+    
+        /*Begin of operation code */
+
+        add.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent e){
+                String op1 = pad.getText();
+                if(op1.contains(".")){
+                    Float num = Float.parseFloat(op1);
+                    fOp = new operation<Float>(num, 1);
+                } else {
+                    Integer num = Integer.parseInt(op1);
+                    iOp = new operation<Integer>(num,1);
+                }
+           }
+        });
+
 
 
         layout.setAlignment(Pos.CENTER);
@@ -137,5 +168,9 @@ public class Interface extends Application{
         Scene scene = new Scene(mainPane, 500, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
-	}
+    }
+    
+    private operation Calculate(operation toSet){
+        return toSet;
+    }
 }
