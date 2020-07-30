@@ -141,23 +141,19 @@ public class Interface extends Application{
         });
     
         /*Begin of operation code */
-
-        add.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent e){
-                String op1 = pad.getText();
-                if(op1.isEmpty()) {}
-                else {
-                    if(op1.contains(".")){
-                        Float num = Float.parseFloat(op1);
-                        fOp = new operation<Float>(num, 1);
-                    } else {
-                        Integer num = Integer.parseInt(op1);
-                        iOp = new operation<Integer>(num,1);
-                    }
-                    pad.setText("");
+        add.setOnAction(e -> {
+            String op1 = pad.getText();
+            if(op1.isEmpty()) {}
+            else {
+                if(op1.contains(".")){
+                    Float num = Float.parseFloat(op1);
+                    fOp = new operation<Float>(num, 1);
+                } else {
+                    Integer num = Integer.parseInt(op1);
+                    iOp = new operation<Integer>(num,1);
                 }
-           }
+                pad.setText("");
+            }
         });
 
         sub.setOnAction(e -> {
