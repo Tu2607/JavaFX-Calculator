@@ -60,6 +60,7 @@ public class Interface extends Application{
         Button C = new Button("C");
         Button CE = new Button("CE");
         Button equal = new Button("=");
+	Button mod = new Button("%");
 
         //Numbers pad
         layout.add(buttons[0], 1, 4);
@@ -92,6 +93,9 @@ public class Interface extends Application{
         CE.setPrefSize(70, 70);
         layout.add(equal,3,4);
         equal.setPrefSize(70, 70);
+	    layout.add(mod, 2, 0);
+	    mod.setPrefSize(70, 70);
+
 
         //Setting up number buttons
         for(int i = 0; i < 10; ++i){
@@ -201,6 +205,21 @@ public class Interface extends Application{
             }
         });
 
+        mod.setOnAction(e -> {
+            String op1 = pad.getText();
+            if(op1.isEmpty()) {}
+            else {
+                if(op1.contains(".")){
+                    Float num = Float.parseFloat(op1);
+                    fOp = new operation<Float>(num, 5);
+                } else {
+                    Integer num = Integer.parseInt(op1);
+                    iOp = new operation<Integer>(num, 5);
+                }
+                pad.setText("");
+            }
+        });
+
         equal.setOnAction(e -> {
             String op2 = pad.getText();
             if(op2.contains(".")){ //Second operand is a Float
@@ -232,8 +251,16 @@ public class Interface extends Application{
                     answer<Integer,Integer> answer = new answer<Integer, Integer>(num, iOp);
                     answer.typeCheck();
                     answer.operate();
-                    String fin = Integer.toString(answer.iresult);
-                    pad.setText(fin);
+                    if(answer.Id == 4 && answer.iresult != null){
+                        String fin = Integer.toString(answer.iresult);
+                        pad.setText(fin);
+                    } else if (answer.Id == 4 && answer.iresult == null){
+                        String fin = Float.toString(answer.fresult);
+                        pad.setText(fin);
+                    } else {
+                        String fin = Integer.toString(answer.iresult);
+                        pad.setText(fin);
+                    }
                 }
             }
         });

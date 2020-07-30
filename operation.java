@@ -54,33 +54,41 @@ class answer <Y, T> extends operation<T> {
 
     void operate(){
         if(i1 instanceof Integer){
-            iresult = calculate(i1, i2);
+            calculate(i1, i2);
         } else {
-            fresult = calculate(f1, f2);
+            calculate(f1, f2);
         }
     }
     
-    Integer calculate(Integer one, Integer two){
+    void calculate(Integer one, Integer two){
         if(this.Id == 1){
-            return one + two;
+            this.iresult =  one + two;
         } else if (this.Id == 2){
-            return one - two;
+            this.iresult =  one - two;
         } else if (this.Id == 3){
-            return one * two;
+            this.iresult =  one * two;
+        } else if (this.Id == 4) { //A check for division
+            if((one.floatValue()/two.floatValue()) % 1 == 0) { //This is a whole number
+                this.iresult = one / two;
+            } else {
+                this.fresult = one.floatValue() / two.floatValue();
+            }
         } else {
-            return one / two;
+            this.iresult =  one % two;
         }
     }
 
-    Float calculate(Float one, Float two){
+    void calculate(Float one, Float two){
         if(this.Id == 1){
-            return one + two;
+            this.fresult = one + two;
         } else if(this.Id == 2){
-            return one - two;
-        } else if(this.Id ==3){
-            return one * two;
+            this.fresult = one - two;
+        } else if(this.Id == 3){
+            this.fresult =  one * two;
+        } else if (this.Id == 4){
+            this.fresult =  one / two;
         } else {
-            return one / two;
+            this.fresult =  one % two;
         }
     }
 }
