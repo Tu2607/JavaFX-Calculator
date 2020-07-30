@@ -1,6 +1,3 @@
-import java.util.*;
-
-
 interface devOp <T> {
     T getValue();
 }
@@ -37,16 +34,18 @@ class answer <Y, T> extends operation<T> {
         iresult = null;
     }
 
-    void typeCheck(){
+    void typeCheck(){ //Error in here. Check your type Cast
         if(this.op1 instanceof Integer && this.op2 instanceof Integer){
             this.i1 = (Integer) op1;
             this.i2 = (Integer) op2;
         } else if (this.op1 instanceof Integer && this.op2 instanceof Float){ 
-            this.f1 = (Float) op1;
+            Integer temp = (Integer) this.op1;
+            this.f1 = temp.floatValue();
             this.f2 = (Float) op2;
         } else if (this.op1 instanceof Float && this.op2 instanceof Integer){
+            Integer temp = (Integer) this.op2;
             this.f1 = (Float) op1;
-            this.f2 = (Float) op2;
+            this.f2 = temp.floatValue();
         } else {
             this.f1 = (Float) op1;
             this.f2 = (Float) op2;
@@ -80,7 +79,7 @@ class answer <Y, T> extends operation<T> {
             return one - two;
         } else if(this.Id ==3){
             return one * two;
-        } else{
+        } else {
             return one / two;
         }
     }

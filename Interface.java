@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
 public class Interface extends Application{
 
@@ -18,8 +17,8 @@ public class Interface extends Application{
         launch();
     }
 
-    operation<Float> fOp;
-    operation<Integer> iOp;
+    operation<Float> fOp = null;
+    operation<Integer> iOp = null;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception { 
@@ -147,16 +146,101 @@ public class Interface extends Application{
             @Override
             public void handle(ActionEvent e){
                 String op1 = pad.getText();
-                if(op1.contains(".")){
-                    Float num = Float.parseFloat(op1);
-                    fOp = new operation<Float>(num, 1);
-                } else {
-                    Integer num = Integer.parseInt(op1);
-                    iOp = new operation<Integer>(num,1);
+                if(op1.isEmpty()) {}
+                else {
+                    if(op1.contains(".")){
+                        Float num = Float.parseFloat(op1);
+                        fOp = new operation<Float>(num, 1);
+                    } else {
+                        Integer num = Integer.parseInt(op1);
+                        iOp = new operation<Integer>(num,1);
+                    }
+                    pad.setText("");
                 }
            }
         });
 
+        sub.setOnAction(e -> {
+            String op1 = pad.getText();
+            if(op1.isEmpty()) {}
+            else {
+                if(op1.contains(".")){
+                    Float num = Float.parseFloat(op1);
+                    fOp = new operation<Float>(num, 2);
+                } else {
+                    Integer num = Integer.parseInt(op1);
+                    iOp = new operation<Integer>(num, 2);
+                }
+                pad.setText("");
+            }
+        });
+
+        mul.setOnAction(e -> {
+            String op1 = pad.getText();
+            if(op1.isEmpty()) {}
+            else {
+                if(op1.contains(".")){
+                    Float num = Float.parseFloat(op1);
+                    fOp = new operation<Float>(num, 3);
+                } else {
+                    Integer num = Integer.parseInt(op1);
+                    iOp = new operation<Integer>(num, 3);
+                }
+                pad.setText("");
+            }
+        });
+
+        div.setOnAction(e -> {
+            String op1 = pad.getText();
+            if(op1.isEmpty()) {}
+            else {
+                if(op1.contains(".")){
+                    Float num = Float.parseFloat(op1);
+                    fOp = new operation<Float>(num, 4);
+                } else {
+                    Integer num = Integer.parseInt(op1);
+                    iOp = new operation<Integer>(num, 4);
+                }
+                pad.setText("");
+            }
+        });
+
+        equal.setOnAction(e -> {
+            String op2 = pad.getText();
+            if(op2.contains(".")){ //Second operand is a Float
+                if(fOp != null){ //Now i know that the first operand is type Float
+                    Float num = Float.parseFloat(op2);
+                    answer<Float,Float> answer = new answer<Float,Float>(num, fOp);
+                    answer.typeCheck();
+                    answer.operate();
+                    String fin = Float.toString(answer.fresult);
+                    pad.setText(fin);
+                } else if (iOp != null){ //Is an integer type
+                    Float num = Float.parseFloat(op2);
+                    answer <Float,Integer> answer = new answer <Float,Integer>(num, iOp);
+                    answer.typeCheck();
+                    answer.operate();
+                    String fin = Float.toString(answer.fresult);
+                    pad.setText(fin);
+                }
+            } else {
+                if(fOp != null){
+                    Integer num = Integer.parseInt(op2);
+                    answer<Integer, Float> answer = new answer<Integer, Float>(num, fOp);
+                    answer.typeCheck();
+                    answer.operate();
+                    String fin = Float.toString(answer.fresult);
+                    pad.setText(fin);
+                } else if (iOp != null){
+                    Integer num = Integer.parseInt(op2);
+                    answer<Integer,Integer> answer = new answer<Integer, Integer>(num, iOp);
+                    answer.typeCheck();
+                    answer.operate();
+                    String fin = Integer.toString(answer.iresult);
+                    pad.setText(fin);
+                }
+            }
+        });
 
 
         layout.setAlignment(Pos.CENTER);
@@ -170,7 +254,4 @@ public class Interface extends Application{
         primaryStage.show();
     }
     
-    private operation Calculate(operation toSet){
-        return toSet;
-    }
 }
