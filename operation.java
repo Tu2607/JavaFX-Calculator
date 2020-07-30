@@ -11,7 +11,7 @@ class operation <T> implements devOp <T> {
         this.Id = id;
     }
 
-    public T getValue(){
+    public T getValue(){ //Helper
         return this.op1;
     }
 }

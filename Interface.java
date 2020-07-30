@@ -19,6 +19,7 @@ public class Interface extends Application{
 
     operation<Float> fOp = null;
     operation<Integer> iOp = null;
+    Integer resetFlag = 0;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception { 
@@ -60,7 +61,7 @@ public class Interface extends Application{
         Button C = new Button("C");
         Button CE = new Button("CE");
         Button equal = new Button("=");
-	Button mod = new Button("%");
+	    Button mod = new Button("%");
 
         //Numbers pad
         layout.add(buttons[0], 1, 4);
@@ -101,8 +102,15 @@ public class Interface extends Application{
         for(int i = 0; i < 10; ++i){
             Integer a = i;
             buttons[i].setOnAction(e -> {
-                String cur = pad.getText();
-                pad.setText(cur + Integer.toString(a));
+                if((fOp != null || iOp != null) && resetFlag == 0){ //This means there is a first operand already
+                    pad.setText("");
+                    String cur = pad.getText();
+                    pad.setText(cur + Integer.toString(a));
+                    resetFlag = 1;
+                } else {
+                    String cur = pad.getText();
+                    pad.setText(cur + Integer.toString(a));
+                }
             });
         }
 
@@ -146,6 +154,9 @@ public class Interface extends Application{
     
         /*Begin of operation code */
         add.setOnAction(e -> {
+            if(fOp != null || iOp != null) {  //Test code
+                equal.fire();
+            }
             String op1 = pad.getText();
             if(op1.isEmpty()) {}
             else {
@@ -156,11 +167,14 @@ public class Interface extends Application{
                     Integer num = Integer.parseInt(op1);
                     iOp = new operation<Integer>(num,1);
                 }
-                pad.setText("");
+                //pad.setText("");
             }
         });
 
         sub.setOnAction(e -> {
+            if(fOp != null || iOp != null){
+                equal.fire();
+            }
             String op1 = pad.getText();
             if(op1.isEmpty()) {}
             else {
@@ -171,11 +185,14 @@ public class Interface extends Application{
                     Integer num = Integer.parseInt(op1);
                     iOp = new operation<Integer>(num, 2);
                 }
-                pad.setText("");
+                //pad.setText("");
             }
         });
 
         mul.setOnAction(e -> {
+            if(fOp != null || iOp != null){
+                equal.fire();
+            }
             String op1 = pad.getText();
             if(op1.isEmpty()) {}
             else {
@@ -186,11 +203,14 @@ public class Interface extends Application{
                     Integer num = Integer.parseInt(op1);
                     iOp = new operation<Integer>(num, 3);
                 }
-                pad.setText("");
+                //pad.setText("");
             }
         });
 
         div.setOnAction(e -> {
+            if(fOp != null || iOp != null){
+                equal.fire();
+            }
             String op1 = pad.getText();
             if(op1.isEmpty()) {}
             else {
@@ -201,11 +221,14 @@ public class Interface extends Application{
                     Integer num = Integer.parseInt(op1);
                     iOp = new operation<Integer>(num, 4);
                 }
-                pad.setText("");
+                //pad.setText("");
             }
         });
 
         mod.setOnAction(e -> {
+            if(fOp != null || iOp != null){
+                equal.fire();
+            }
             String op1 = pad.getText();
             if(op1.isEmpty()) {}
             else {
@@ -216,7 +239,7 @@ public class Interface extends Application{
                     Integer num = Integer.parseInt(op1);
                     iOp = new operation<Integer>(num, 5);
                 }
-                pad.setText("");
+                //pad.setText("");
             }
         });
 
@@ -230,6 +253,9 @@ public class Interface extends Application{
                     answer.operate();
                     String fin = Float.toString(answer.fresult);
                     pad.setText(fin);
+                    fOp = null;
+                    iOp = null;
+                    resetFlag = 0;
                 } else if (iOp != null){ //Is an integer type
                     Float num = Float.parseFloat(op2);
                     answer <Float,Integer> answer = new answer <Float,Integer>(num, iOp);
@@ -237,6 +263,9 @@ public class Interface extends Application{
                     answer.operate();
                     String fin = Float.toString(answer.fresult);
                     pad.setText(fin);
+                    fOp = null;
+                    iOp = null;
+                    resetFlag = 0;
                 }
             } else {
                 if(fOp != null){
@@ -246,6 +275,9 @@ public class Interface extends Application{
                     answer.operate();
                     String fin = Float.toString(answer.fresult);
                     pad.setText(fin);
+                    fOp = null;
+                    iOp = null;
+                    resetFlag = 0;
                 } else if (iOp != null){
                     Integer num = Integer.parseInt(op2);
                     answer<Integer,Integer> answer = new answer<Integer, Integer>(num, iOp);
@@ -261,6 +293,9 @@ public class Interface extends Application{
                         String fin = Integer.toString(answer.iresult);
                         pad.setText(fin);
                     }
+                    fOp = null;
+                    iOp = null;
+                    resetFlag = 0;
                 }
             }
         });
